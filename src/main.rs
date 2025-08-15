@@ -143,10 +143,6 @@ static LAMINA_PATH: Lazy<PathBuf> = Lazy::new(|| {
 
     // 9. 删除 ZIP 文件
     fs::remove_file(&zip_path).ok();
-    Command::new("tree")
-        .arg(&out_dir)
-        .status()
-        .expect("执行 tree 命令失败");
 
     // 10. 设置可执行权限（Unix 系统）
     #[cfg(unix)]
@@ -201,7 +197,12 @@ pub fn run(script: &str) -> String {
     // 清理临时文件
     fs::remove_file(&script_path).ok();
 
-    println!("{}", String::from_utf8_lossy(&output.stdout));
+    Command::new("echo")
+        .arg(format!("\"{}\"", String::from_utf8_lossy(&output.stdout)))
+        .stdout(std::io::stderr()) // Redirect stdout to stderr
+        .status()
+        .expect("Failed to execute command");
+
     extract_script_output(&String::from_utf8_lossy(&output.stdout))
 }
 
