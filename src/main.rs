@@ -201,6 +201,7 @@ pub fn run(script: &str) -> String {
     // 清理临时文件
     fs::remove_file(&script_path).ok();
 
+    println!("{}", String::from_utf8_lossy(&output.stdout));
     extract_script_output(&String::from_utf8_lossy(&output.stdout))
 }
 
