@@ -4,7 +4,7 @@
 
 测试用例：[src/tests.rs](src/tests.rs)
 
-测试结果：[GitHub Actions](https://github.com/zhoushengdao/lamina-test/actions/workflows/test.yml)
+测试结果：[最新测试结果](https://github.com/zhoushengdao/lamina-test/issues/1#issuecomment-3192037735)
 
 ## 贡献
 
