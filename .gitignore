@@ -1,3 +1,6 @@
+lamina/
+.env
+
 # Created by https://www.toptal.com/developers/gitignore/api/rust,rust-analyzer,c,c++,cmake,xmake,git,visualstudiocode,visualstudio,clion
 # Edit at https://www.toptal.com/developers/gitignore?templates=rust,rust-analyzer,c,c++,cmake,xmake,git,visualstudiocode,visualstudio,clion
 
