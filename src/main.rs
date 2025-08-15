@@ -45,7 +45,7 @@ static LAMINA_PATH: Lazy<PathBuf> = Lazy::new(|| {
 
     // 2. 获取系统对应的可执行文件名
     let exe_path = if cfg!(target_os = "windows") {
-        "build/Release/Lamina.exe"
+        "build\\Release\\Lamina.exe"
     } else {
         "build/Lamina"
     };
@@ -172,7 +172,7 @@ fn extract_script_output(output: &str) -> String {
     script_output.join("\r\n").trim().to_string()
 }
 
-pub fn run(script: &str) -> String {
+fn run(script: String) -> String {
     let scripts_dir = env::current_dir().unwrap().join("lamina").join("scripts");
     fs::create_dir_all(&scripts_dir).expect("创建脚本文件夹失败");
 
@@ -197,7 +197,19 @@ pub fn run(script: &str) -> String {
     // 清理临时文件
     fs::remove_file(&script_path).ok();
 
-    extract_script_output(&String::from_utf8_lossy(&output.stdout))
+    if *&output.stderr.len() > 0 {
+        String::from_utf8_lossy(&output.stderr).trim().to_string()
+    } else {
+        extract_script_output(&String::from_utf8_lossy(&output.stdout))
+    }
+}
+
+pub fn s(script: String) -> String {
+    run(format!("print({});", script))
+}
+
+pub fn m(script: String) -> String {
+    run(script)
 }
 
 fn main() {
