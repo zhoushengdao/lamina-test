@@ -2,7 +2,7 @@ name: Test Lamina
 
 on:
   schedule:
-    - cron: "30 */8 * * *"
+    - cron: "0 16/4 * * *"
   workflow_dispatch:
 
 permissions:
@@ -11,12 +11,10 @@ permissions:
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
-
       - run: cargo run
-      - name: Run tests
-        run: cargo test
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: cargo test
