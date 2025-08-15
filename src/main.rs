@@ -45,9 +45,9 @@ static LAMINA_PATH: Lazy<PathBuf> = Lazy::new(|| {
 
     // 2. 获取系统对应的可执行文件名
     let exe_path = if cfg!(target_os = "windows") {
-        "build/Release/lamina.exe"
+        "build/Release/Lamina.exe"
     } else {
-        "build/lamina"
+        "build/Lamina"
     };
 
     let lamina_exe = out_dir.join(exe_path);
@@ -149,12 +149,12 @@ static LAMINA_PATH: Lazy<PathBuf> = Lazy::new(|| {
         .expect("执行 tree 命令失败");
 
     // 10. 设置可执行权限（Unix 系统）
-    // #[cfg(unix)]
-    // {
-    //     use std::os::unix::fs::PermissionsExt;
-    //     let perms = fs::Permissions::from_mode(0o755);
-    //     fs::set_permissions(&lamina_exe, perms).expect("设置可执行权限失败");
-    // }
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        let perms = fs::Permissions::from_mode(0o755);
+        fs::set_permissions(&lamina_exe, perms).expect("设置可执行权限失败");
+    }
 
     // 11. 返回可执行文件路径
     println!("Lamina 可执行文件路径：{:?}", lamina_exe);
