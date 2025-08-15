@@ -147,18 +147,17 @@ static LAMINA_PATH: Lazy<PathBuf> = Lazy::new(|| {
         .arg(&out_dir)
         .status()
         .expect("执行 tree 命令失败");
-    println!("Lamina 可执行文件路径：{:?}", lamina_exe);
 
     // 10. 设置可执行权限（Unix 系统）
-    #[cfg(unix)]
-    {
-        use std::os::unix::fs::PermissionsExt;
-        let perms = fs::Permissions::from_mode(0o755);
-        fs::set_permissions(&lamina_exe, perms).expect("设置可执行权限失败");
-    }
+    // #[cfg(unix)]
+    // {
+    //     use std::os::unix::fs::PermissionsExt;
+    //     let perms = fs::Permissions::from_mode(0o755);
+    //     fs::set_permissions(&lamina_exe, perms).expect("设置可执行权限失败");
+    // }
 
     // 11. 返回可执行文件路径
-
+    println!("Lamina 可执行文件路径：{:?}", lamina_exe);
     lamina_exe
 });
 
