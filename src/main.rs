@@ -197,11 +197,7 @@ pub fn run(script: &str) -> String {
     // 清理临时文件
     fs::remove_file(&script_path).ok();
 
-    Command::new("echo")
-        .arg(format!("\"{}\"", String::from_utf8_lossy(&output.stdout)))
-        .stdout(std::io::stderr()) // Redirect stdout to stderr
-        .status()
-        .expect("Failed to execute command");
+    println!("脚本输出：{}", String::from_utf8_lossy(&output.stdout));
 
     extract_script_output(&String::from_utf8_lossy(&output.stdout))
 }
