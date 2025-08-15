@@ -143,6 +143,10 @@ static LAMINA_PATH: Lazy<PathBuf> = Lazy::new(|| {
 
     // 9. 删除 ZIP 文件
     fs::remove_file(&zip_path).ok();
+    Command::new("tree")
+        .arg(&out_dir)
+        .status()
+        .expect("执行 tree 命令失败");
 
     // 10. 设置可执行权限（Unix 系统）
     #[cfg(unix)]
@@ -153,7 +157,7 @@ static LAMINA_PATH: Lazy<PathBuf> = Lazy::new(|| {
     }
 
     // 11. 返回可执行文件路径
-    println!("Lamina 可执行文件路径：{:?}", exe_path);
+    println!("Lamina 可执行文件路径：{:?}", lamina_exe);
     lamina_exe
 });
 
