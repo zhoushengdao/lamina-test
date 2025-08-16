@@ -12,6 +12,8 @@
 
 为本项目作贡献：
 
+> 推荐阅读：[Writing Automated Tests - The Rust Programming Language](https://doc.rust-lang.org/stable/book/ch11-00-testing.html)、[Tests - The rustc book](https://doc.rust-lang.org/rustc/tests/index.html)、[Testing - The Rust Reference](https://doc.rust-lang.org/reference/attributes/testing.html)、[test - The Rust Unstable Book](https://doc.rust-lang.org/stable/unstable-book/library-features/test.html)
+
 1. 克隆仓库：`git clone https://github.com/zhoushengdao/lamina-test.git`
 2. 创建并切换分支：`git checkout -b <name>`
 3. 在 `src/tests.rs` 中编写新的测试。  

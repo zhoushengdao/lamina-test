@@ -52,6 +52,16 @@ jobs:
           )
           Add-Content -Path issue_body.md -Value "- 预编译文件地址：$decodedDownload"
 
+          try {
+              # 获取日志文件总行数
+              $lineCount = (Get-Content -Path "log.log" | Measure-Object -Line).Lines
+              $summaryLine = Get-Content -Path "log.log" | Select-Object -Last 2 | Select-Object -First 1
+              Add-Content -Path issue_body.md -Value "- 测试结论：`$summaryLine`"
+          } catch {
+              Add-Content -Path issue_body.md -Value "- 测试结论：读取失败 `$($_.Exception.Message)`"
+              Write-Error "读取测试结论失败：$_"
+          }
+
           # 添加日志下载链接
           Add-Content -Path issue_body.md -Value "- 下载测试日志：[${{ steps.upload_log.outputs.artifact-url }}](${{ steps.upload_log.outputs.artifact-url }})"
 
