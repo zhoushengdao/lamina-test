@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: rustup toolchain install stable --profile minimal
+      - run: rustup update
       - run: cargo run
         id: main
       - run: cargo test > log.log

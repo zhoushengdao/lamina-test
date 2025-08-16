@@ -1,0 +1,7 @@
+1. [`print_object`](./print_object.rs)
+1. [`print_number`](./print_number.rs)
+1. [`print_sqrt`](./print_sqrt.rs)
+1. [`print_frac`](./print_frac.rs)
+1. [`print_array`](./print_array.rs)
+1. [`print_martix`](./print_martix.rs)
+1. [`op_add`](./op_add.rs)
