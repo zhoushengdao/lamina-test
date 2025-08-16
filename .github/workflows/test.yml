@@ -58,7 +58,7 @@ jobs:
           Add-Content -Path issue_body.md -Value "- 测试结论：`$summaryLine`"
 
           # 添加日志下载链接
-          Add-Content -Path issue_body.md -Value "- 下载测试日志：<${{ steps.upload_log.outputs.artifact-url }}> "
+          echo "下载日志：<${{ steps.upload_log.outputs.artifact-url }}>" >> issue_body.md
 
           # 添加空行
           Add-Content -Path issue_body.md -Value ""
