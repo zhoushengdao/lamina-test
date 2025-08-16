@@ -32,7 +32,7 @@
    }
    ```
 
-   - 其中，每一个 `case` 都对应一组输入和预期的输出。参见 [rstest in rstest - Rust](https://docs.rs/rstest/latest/rstest/attr.rstest.html)。
+   - 其中，每一个 `case` 都对应一组输入和预期的输出。参见 [rstest in rstest - Rust](https://docs.rs/rstest/latest/rstest/attr.rstest.html)。测试用例的编写顺序，要先测试 `print_object` 的特殊值，再测试 `print_number` 的正负零和极大极小数，以此类推，最后再测试这个函数的特殊情况。
    - 函数名要有意义，方便查阅。
    - 函数的输入参数应该保留原样。
    - `assert_eq!` 用来比较预期值和实际值是否相等。参见 [std - Rust](https://doc.rust-lang.org/std/index.html#macros)。
