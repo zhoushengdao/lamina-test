@@ -51,7 +51,7 @@ jobs:
           Add-Content -Path issue_body.md -Value "- 预编译文件地址：$decodedDownload"
 
           # 获取日志文件总行数
-          $summaryLine = Get-Content -Path "log.log" | Select-Object -Last 2 | Select-Object -First 1
+          $summaryLine = (Get-Content -Path "log.log" | Select-Object -Last 2 | Select-Object -First 1) -replace "test result: ",""
           Add-Content -Path issue_body.md -Value "- 测试结论：``$summaryLine``"
 
           # 添加日志下载链接
