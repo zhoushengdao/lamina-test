@@ -1,3 +1,4 @@
+use base64::Engine;
 use once_cell::sync::Lazy;
 use rand::Rng;
 use reqwest::blocking::Client;
@@ -5,9 +6,7 @@ use serde::Deserialize;
 use std::env;
 use std::fs;
 use std::io::Write;
-use std::path::PathBuf;
 use std::process::Command;
-use zip::ZipArchive;
 
 mod tests;
 
@@ -35,7 +34,7 @@ struct Artifact {
 }
 
 // 全局静态变量存储 Lamina 路径
-static LAMINA_PATH: Lazy<PathBuf> = Lazy::new(|| {
+static LAMINA_PATH: Lazy<std::path::PathBuf> = Lazy::new(|| {
     // 加载 .env 文件
     dotenv::dotenv().ok();
 
@@ -77,7 +76,12 @@ static LAMINA_PATH: Lazy<PathBuf> = Lazy::new(|| {
         .first()
         .expect("未找到成功的构建");
 
-    println!("使用的 Lamina 提交哈希：{}", run.head_sha); // TODO
+    // println!("使用的 Lamina 提交哈希：{}", run.head_sha);
+    Command::new("powershell")
+        .arg("-Command")
+        .arg(format!("\"hash={}\" >> $env:GITHUB_OUTPUT", run.head_sha))
+        .status()
+        .expect("向 GitHub 输出中写入 hash 失败");
 
     // 5. 获取 artifacts
     let artifacts_response = client
@@ -105,7 +109,19 @@ static LAMINA_PATH: Lazy<PathBuf> = Lazy::new(|| {
         .expect(&format!("产物 {} 未找到", target_name));
 
     // 7. 下载 artifact
-    println!("下载产物：{}", artifact.name);
+    // println!("下载产物：{}", artifact.name);
+    Command::new("powershell")
+        .arg("-Command")
+        .arg(format!(
+            "\"download_url={}\" >> $env:GITHUB_OUTPUT",
+            base64::engine::general_purpose::STANDARD.encode(format!(
+                "[{}]({})",
+                artifact.name, artifact.archive_download_url
+            ))
+        ))
+        .status()
+        .expect("向 GitHub 输出中写入 download_url 失败");
+
     let download_url = &artifact.archive_download_url;
     let mut response = client
         .get(download_url)
@@ -122,7 +138,7 @@ static LAMINA_PATH: Lazy<PathBuf> = Lazy::new(|| {
 
     // 8. 解压 ZIP 文件
     let zip_file = fs::File::open(&zip_path).expect("打开 Zip 文件失败");
-    let mut archive = ZipArchive::new(zip_file).expect("读取 Zip 文件失败");
+    let mut archive = zip::ZipArchive::new(zip_file).expect("读取 Zip 文件失败");
 
     for i in 0..archive.len() {
         let mut file = archive.by_index(i).expect("读取 Zip 中的文件失败");
@@ -153,7 +169,6 @@ static LAMINA_PATH: Lazy<PathBuf> = Lazy::new(|| {
     }
 
     // 11. 返回可执行文件路径
-    println!("Lamina 可执行文件路径：{:?}", lamina_exe);
     lamina_exe
 });
 
@@ -189,7 +204,7 @@ fn run(script: String) -> String {
     writeln!(file, "{}", script).expect("写入脚本文件失败");
 
     // 执行 Lamina
-    let output = Command::new(LAMINA_PATH.as_os_str())
+    let output = std::process::Command::new(LAMINA_PATH.as_os_str())
         .arg(&script_path.as_os_str())
         .output()
         .expect("执行 Lamina 失败");

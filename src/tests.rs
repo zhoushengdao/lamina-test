@@ -8,7 +8,7 @@ use rstest::rstest;
 #[case("true", "true")]
 #[case("false", "false")]
 #[case("null", "null")]
-#[case("\"str\"", "str")]
+#[case(r#""str""#, "str")]
 fn print_object(#[case] input: String, #[case] expected: String) {
     assert_eq!(expected, s(input.clone()), "简单表达式“{}”", input);
 }
@@ -110,12 +110,12 @@ fn print_number(#[case] input: String, #[case] expected: String) {
 #[case("true", "Error: sqrt() requires numeric argument")]
 #[case("false", "Error: sqrt() requires numeric argument")]
 #[case("null", "Error: sqrt() requires numeric argument")]
-#[case("\"str\"", "Error: sqrt() requires numeric argument")]
+#[case(r#""str""#, "Error: sqrt() requires numeric argument")]
 fn print_sqrt(#[case] input: String, #[case] expected: String) {
     assert_eq!(
         expected,
         s(format!("sqrt({})", input.clone())),
-        "简单表达式“{}”",
+        "简单表达式“sqrt({})”",
         input
     );
 }
@@ -213,7 +213,7 @@ fn print_sqrt(#[case] input: String, #[case] expected: String) {
 #[case("1/false", "Error: Arithmetic operation '/' requires numeric operands")]
 #[case("1/null", "Error: Arithmetic operation '/' requires numeric operands")]
 #[case(
-    "1/\"str\"",
+    r#"1/"str""#,
     "Error: Arithmetic operation '/' requires numeric operands"
 )]
 #[case("pi()/1", "π")]
@@ -226,7 +226,7 @@ fn print_sqrt(#[case] input: String, #[case] expected: String) {
 #[case("false/1", "Error: Arithmetic operation '/' requires numeric operands")]
 #[case("null/1", "Error: Arithmetic operation '/' requires numeric operands")]
 #[case(
-    "\"str\"/1",
+    r#""str"/1"#,
     "Error: Arithmetic operation '/' requires numeric operands"
 )]
 fn print_frac(#[case] input: String, #[case] expected: String) {

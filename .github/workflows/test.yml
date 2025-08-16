@@ -17,7 +17,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - run: rustup toolchain install stable --profile minimal
+      - uses: Swatinem/rust-cache@v2
+
       - run: cargo run
+        id: main
       - run: cargo test > log.log
 
       - name: Upload test log
@@ -31,13 +36,14 @@ jobs:
       - name: Make issue body
         run: |
           echo "# $(date +'%Y-%m-%d %H:%M:%S')" 测试 > issue_body.md
-          echo "下载日志：[${{ steps.upload_log.outputs.artifact-url }}](${{ steps.upload_log.outputs.artifact-url }})" >> issue_body.md
+          echo "- 测试时间：$(date +'%Y-%m-%d %H:%M:%S')" 测试 > issue_body.md
+          echo "- 测试日志：[${{ steps.upload_log.outputs.artifact-url }}](${{ steps.upload_log.outputs.artifact-url }})" >> issue_body.md
           echo "" >> issue_body.md
           echo '```' >> issue_body.md
           cat log.log >> issue_body.md
           echo '```' >> issue_body.md
 
-      - name: Create a comment
+      - name: Update comment
         uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: 1
