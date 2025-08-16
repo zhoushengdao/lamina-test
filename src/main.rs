@@ -113,14 +113,14 @@ static LAMINA_PATH: Lazy<std::path::PathBuf> = Lazy::new(|| {
     Command::new("powershell")
         .arg("-Command")
         .arg(format!(
-            "\"download_url={}\" >> $env:GITHUB_OUTPUT",
+            "\"download={}\" >> $env:GITHUB_OUTPUT",
             base64::engine::general_purpose::STANDARD.encode(format!(
                 "[{}]({})",
                 artifact.name, artifact.archive_download_url
             ))
         ))
         .status()
-        .expect("向 GitHub 输出中写入 download_url 失败");
+        .expect("向 GitHub 输出中写入 download 失败");
 
     let download_url = &artifact.archive_download_url;
     let mut response = client
