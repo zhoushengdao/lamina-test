@@ -16,7 +16,7 @@
 
 1. 克隆仓库：`git clone https://github.com/zhoushengdao/lamina-test.git`
 2. 创建并切换分支：`git checkout -b <name>`
-3. 在 `src/tests.rs` 中编写新的测试。  
+3. 在 `tests/ 目录` 中编写新的测试。  
    考虑到目前主要是测试同一功能在不同参数下的结果，所以请仿照下面的示例编写测试。
 
    ```rust

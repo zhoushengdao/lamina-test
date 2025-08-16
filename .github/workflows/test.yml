@@ -13,7 +13,7 @@ permissions:
   issues: write
 
 jobs:
-  build:
+  test:
     runs-on: windows-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -67,7 +67,7 @@ jobs:
           Add-Content -Path issue_body.md -Value '``````'
 
           # 追加日志文件内容
-          Get-Content -Path log.log | Where-Object { $_ -notmatch '^test tests::' } | Add-Content -Path issue_body.md
+          Get-Content -Path log.log | Where-Object { $_ -notmatch '^test ' } | Add-Content -Path issue_body.md
 
           # 添加代码块结束标记
           Add-Content -Path issue_body.md -Value '``````'
