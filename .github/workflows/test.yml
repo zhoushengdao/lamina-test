@@ -24,7 +24,7 @@ jobs:
       - run: rustup update
       - run: cargo run
         id: main
-      - run: cargo test > log.log
+      - run: cargo test --no-fail-fast > log.log
 
       - name: Upload test log
         id: upload_log
