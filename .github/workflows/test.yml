@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: "0 16/4 * * *"
+    - cron: "0 0,4,8,12,16,20 * * *"
   workflow_dispatch:
 
 permissions:
@@ -53,9 +53,9 @@ jobs:
           )
           Add-Content -Path issue_body.md -Value "- 预编译文件地址：$decodedDownload"
 
-          # 获取日志文件总行数
-          $summaryLine = (Get-Content -Path "log.log" | Select-Object -Last 2 | Select-Object -First 1) -replace "test result: ",""
-          Add-Content -Path issue_body.md -Value "- 测试结论：``$summaryLine``"
+          # # 添加测试结论
+          # $summaryLine = (Get-Content -Path "log.log" | Select-Object -Last 2 | Select-Object -First 1) -replace "test result: ",""
+          # Add-Content -Path issue_body.md -Value "- 测试结论：``$summaryLine``"
 
           # 添加日志下载链接
           Add-Content -Path issue_body.md -Value "- 下载测试日志：<${{ steps.upload_log.outputs.artifact-url }}>"
@@ -67,7 +67,7 @@ jobs:
           Add-Content -Path issue_body.md -Value '``````'
 
           # 追加日志文件内容
-          Get-Content -Path log.log -Raw | Add-Content -Path issue_body.md
+          Get-Content -Path log.log | Where-Object { $_ -notmatch '^test tests::' } | Add-Content -Path issue_body.md
 
           # 添加代码块结束标记
           Add-Content -Path issue_body.md -Value '``````'

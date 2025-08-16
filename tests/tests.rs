@@ -1,5 +1,4 @@
-#[cfg(test)]
-use crate::s;
+use lamina_test::s;
 use rstest::rstest;
 
 #[rstest]
@@ -381,7 +380,6 @@ fn print_sqrt(#[case] input: String, #[case] expected: String) {
 #[case("sqrt(2)/1", "√2")]
 #[case("sqrt(4)/1", "2")]
 #[case("sqrt(8)/1", "2√2")]
-// ! 2
 #[case("sqrt(pi())/2", "√π/2")] // TODO
 #[case("sqrt(e())/2", "√e/2")] // TODO
 #[case("sqrt(10)/2", "√10/2")] // TODO
@@ -423,7 +421,6 @@ fn print_sqrt(#[case] input: String, #[case] expected: String) {
 #[case("sqrt(2)/2", "√2/2")] // TODO
 #[case("sqrt(4)/2", "1")]
 #[case("sqrt(8)/2", "√2")]
-// ! 3
 #[case("sqrt(pi())/3", "√π/3")] // TODO TODO
 #[case("sqrt(e())/3", "√e/3")] // TODO TODO
 #[case("sqrt(10)/3", "√10/3")] // TODO TODO

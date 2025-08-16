@@ -1,5 +1,5 @@
 [package]
-name = "lamina-test"
+name = "lamina_test"
 version = "1.1.0"
 edition = "2024"
 

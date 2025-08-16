@@ -2,7 +2,7 @@
 
 [![Test Lamina](https://github.com/zhoushengdao/lamina-test/actions/workflows/test.yml/badge.svg)](https://github.com/zhoushengdao/lamina-test/actions/workflows/test.yml)
 
-测试用例：[src/tests.rs](src/tests.rs)
+测试用例：[tests/ 目录](tests/)
 
 测试结果：[最新测试结果](https://github.com/zhoushengdao/lamina-test/issues/1#issuecomment-3192037735)
 
