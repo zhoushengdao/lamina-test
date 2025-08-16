@@ -326,7 +326,7 @@ fn print_sqrt(#[case] input: String, #[case] expected: String) {
 #[case("1/sqrt(0.00001)", "100√10")] // TODO
 #[case("1/sqrt(0.000001)", "1000")] // TODO
 #[case("1/sqrt(0.0000001)", "1000√10")] // TODO
-#[case("1/sqrt(0.00000001)", "100000")] // TODO
+#[case("1/sqrt(0.00000001)", "10000")] // TODO
 #[case("1/sqrt(0.000000001)", "10000√10")] // TODO
 #[case("1/sqrt(0.0000000001)", "100000")] // TODO
 #[case("1/sqrt(0.00000000001)", "100000√10")] // TODO
