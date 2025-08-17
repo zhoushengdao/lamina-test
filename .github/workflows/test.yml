@@ -29,7 +29,7 @@ jobs:
 
       - run: cargo run
       # - run: cargo llvm-cov run
-      - run: cargo nextest run --profile=ci --test print_object
+      - run: cargo nextest run --profile=ci
       # - run: cargo llvm-cov nextest --profile=ci --test print_object
       # - run: cargo llvm-cov report --lcov --output-path ./target/nextest/ci/lcov.info
       #   if: ${{ !cancelled() }}
@@ -88,16 +88,16 @@ jobs:
           # 添加日志下载链接
           Add-Content -Path issue_body.md -Value "- 下载测试日志：<${{ steps.upload_artifact.outputs.artifact-url }}>"
 
-          # 添加空行
-          Add-Content -Path issue_body.md -Value ""
-          Add-Content -Path issue_body.md -Value "---"
-          Add-Content -Path issue_body.md -Value ""
-
           # 追加测试摘要文件
           $firstLine = Get-Content -Path "target/nextest/ci/summary.md" -TotalCount 1
           if ($firstLine -match '<img[^>]+>') {
+              Add-Content -Path issue_body.md -Value ""
               $matches[0] | Add-Content -Path issue_body.md
           }
+
+          # 添加 Codecov 链接
+          Add-Content -Path issue_body.md -Value ""
+          Add-Content -Path issue_body.md -Value "[Codecov](https://app.codecov.io/github/zhoushengdao/lamina-test/tests/main)"
 
       - uses: peter-evans/create-or-update-comment@v4
         if: ${{ !cancelled() }}
