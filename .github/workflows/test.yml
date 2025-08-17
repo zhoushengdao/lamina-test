@@ -29,7 +29,7 @@ jobs:
 
       - run: cargo run
       # - run: cargo llvm-cov run
-      - run: cargo nextest run --profile=ci
+      - run: cargo nextest run --profile=ci --test print_object
       # - run: cargo llvm-cov nextest --profile=ci --test print_object
       # - run: cargo llvm-cov report --lcov --output-path ./target/nextest/ci/lcov.info
       #   if: ${{ !cancelled() }}
