@@ -86,7 +86,7 @@ jobs:
           Add-Content -Path issue_body.md -Value "- 预编译文件地址：$decodedDownload"
 
           # 添加日志下载链接
-          Add-Content -Path issue_body.md -Value "- 下载测试日志：<${{ steps.upload_artifact.outputs }}>"
+          Add-Content -Path issue_body.md -Value "- 下载测试日志：<${{ steps.upload_artifact.outputs.artifact-url }}>"
 
           # 添加空行
           Add-Content -Path issue_body.md -Value ""
