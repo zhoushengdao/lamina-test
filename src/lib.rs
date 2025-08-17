@@ -76,9 +76,12 @@ pub static LAMINA_PATH: Lazy<std::path::PathBuf> = Lazy::new(|| {
 
     Command::new("powershell")
         .arg("-Command")
-        .arg(format!("\"hash={}\" >> $env:GITHUB_OUTPUT", run.head_sha))
+        .arg(format!(
+            "\"LAMINA_HASH={}\" >> $env:GITHUB_ENV",
+            run.head_sha
+        ))
         .status()
-        .expect("向 GitHub 输出中写入 hash 失败");
+        .expect("向 GitHub 环境变量中写入 LAMINA_HASH 失败");
 
     // 5. 获取 artifacts
     let artifacts_response = client
@@ -109,14 +112,14 @@ pub static LAMINA_PATH: Lazy<std::path::PathBuf> = Lazy::new(|| {
     Command::new("powershell")
         .arg("-Command")
         .arg(format!(
-            "\"download={}\" >> $env:GITHUB_OUTPUT",
+            "\"LAMINA_DOWNLOAD={}\" >> $env:GITHUB_ENV",
             base64::engine::general_purpose::STANDARD.encode(format!(
                 "[{}]({})",
                 artifact.name, artifact.archive_download_url
             ))
         ))
         .status()
-        .expect("向 GitHub 输出中写入 download 失败");
+        .expect("向 GitHub 环境变量中写入 LAMINA_DOWNLOAD 失败");
 
     let download_url = &artifact.archive_download_url;
     let mut response = client
