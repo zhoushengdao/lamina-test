@@ -34,7 +34,40 @@ jobs:
       - run: cargo llvm-cov report --lcov --output-path ./target/nextest/ci/lcov.info
         if: ${{ !cancelled() }}
 
-      - name: Make issue body
+      - uses: test-summary/action@v2
+        if: ${{ !cancelled() }}
+        with:
+          paths: target/nextest/ci/junit.xml
+          output: target/nextest/ci/test-summary.md
+
+      - uses: actions/upload-artifact@v4
+        id: upload_artifact
+        if: ${{ !cancelled() }}
+        with:
+          name: artifact
+          path: target/nextest/ci/
+          retention-days: 1
+
+      - uses: test-summary/action@v2
+        if: ${{ !cancelled() }}
+        with:
+          paths: target/nextest/ci/junit.xml
+
+      - uses: codecov/codecov-action@v5
+        if: ${{ !cancelled() }}
+        with:
+          files: target/nextest/ci/lcov.info
+          disable_search: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - uses: codecov/test-results-action@v1
+        if: ${{ !cancelled() }}
+        with:
+          file: target/nextest/ci/junit.xml
+          disable_search: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Generate issue body
         if: ${{ !cancelled() }}
         run: |
           # 创建 issue_body.md 并写入标题
@@ -52,35 +85,21 @@ jobs:
           )
           Add-Content -Path issue_body.md -Value "- 预编译文件地址：$decodedDownload"
 
-          # # 添加测试结论
-          # $summaryLine = (Get-Content -Path "log.log" | Select-Object -Last 2 | Select-Object -First 1) -replace "test result: ",""
-          # Add-Content -Path issue_body.md -Value "- 测试结论：``$summaryLine``"
-
           # 添加日志下载链接
-          Add-Content -Path issue_body.md -Value "- 下载测试日志：无"
+          Add-Content -Path issue_body.md -Value "- 下载测试日志：<${{ steps.upload_artifact.outputs }}>"
 
           # 添加空行
           Add-Content -Path issue_body.md -Value ""
+          Add-Content -Path issue_body.md -Value "---"
+          Add-Content -Path issue_body.md -Value ""
 
-          # 添加代码块开始标记
-          Add-Content -Path issue_body.md -Value '``````'
+          # 追加测试摘要文件
+          # Get-Content -Path target/nextest/ci/test-summary.md | Add-Content -Path issue_body.md
 
-          # 追加日志文件内容
-          # Get-Content -Path log.log | Add-Content -Path issue_body.md
-
-          # 添加代码块结束标记
-          Add-Content -Path issue_body.md -Value '``````'
-
-      - uses: codecov/codecov-action@v5
-        if: ${{ !cancelled() }}
+      - uses: peter-evans/create-or-update-comment@v4
+        if: ${{ always() }}
         with:
-          files: ./target/nextest/ci/lcov.info
-          disable_search: true
-          token: ${{ secrets.CODECOV_TOKEN }}
-
-      - uses: codecov/test-results-action@v1
-        if: ${{ !cancelled() }}
-        with:
-          file: ./target/nextest/ci/junit.xml
-          disable_search: true
-          token: ${{ secrets.CODECOV_TOKEN }}
+          issue-number: 1
+          comment-id: 3192037735
+          body-path: issue_body.md
+          edit-mode: replace
