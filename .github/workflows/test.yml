@@ -38,11 +38,11 @@ jobs:
           Add-Content -Path issue_body.md -Value "- 测试时间：$([System.DateTime]::UtcNow.ToString('yyyy-MM-dd HH:mm:ss')) UTC"
 
           # 添加带链接的版本信息
-          Add-Content -Path issue_body.md -Value "- 测试所用版本：[${{ steps.main.outputs.hash }}](https://github.com/Lamina-dev/Lamina/commit/${{ steps.main.outputs.hash }})"
+          Add-Content -Path issue_body.md -Value "- 测试所用版本：[$env:LAMINA_HASH](https://github.com/Lamina-dev/Lamina/commit/$env:LAMINA_HASH)"
 
           # 解码 Base64 编码的下载地址
           $decodedDownload = [System.Text.Encoding]::UTF8.GetString(
-              [System.Convert]::FromBase64String("${{ steps.main.outputs.download }}")
+              [System.Convert]::FromBase64String($env:LAMINA_DOWNLOAD)
           )
           Add-Content -Path issue_body.md -Value "- 预编译文件地址：$decodedDownload"
 
@@ -51,7 +51,7 @@ jobs:
           # Add-Content -Path issue_body.md -Value "- 测试结论：``$summaryLine``"
 
           # 添加日志下载链接
-          Add-Content -Path issue_body.md -Value "- 下载测试日志：<${{ steps.upload_log.outputs.artifact-url }}>"
+          Add-Content -Path issue_body.md -Value "- 下载测试日志：无"
 
           # 添加空行
           Add-Content -Path issue_body.md -Value ""
