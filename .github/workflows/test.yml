@@ -32,6 +32,7 @@ jobs:
       # - run: cargo nextest run --profile=ci
       - run: cargo llvm-cov nextest --profile=ci
       - run: cargo llvm-cov report --lcov --output-path ./target/nextest/ci/lcov.info
+        if: ${{ !cancelled() }}
 
       - name: Make issue body
         if: ${{ !cancelled() }}
