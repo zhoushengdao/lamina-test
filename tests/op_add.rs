@@ -174,4 +174,15 @@ mod op_add_builtin_object {
     fn small_number(#[case] input: String, #[case] expected: String) {
         assert_eq!(expected, s(input.clone()), "简单表达式“{}”", input);
     }
+
+    // #[rstest]
+    // #[case("pi()", "π")]
+    // #[case("e()", "e")]
+    // #[case("true", "true")]
+    // #[case("false", "false")]
+    // #[case("null", "null")]
+    // #[case(r#""str""#, "str")]
+    // fn sqrt_builtin_object(#[case] input: String, #[case] expected: String) {
+    //     assert_eq!(expected, s(input.clone()), "简单表达式“{}”", input);
+    // }
 }
