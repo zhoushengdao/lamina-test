@@ -38,7 +38,7 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           paths: target/nextest/ci/junit.xml
-          output: target/nextest/ci/test-summary.md
+          output: target/nextest/ci/summary.md
 
       - uses: actions/upload-artifact@v4
         id: upload_artifact
@@ -94,10 +94,10 @@ jobs:
           Add-Content -Path issue_body.md -Value ""
 
           # 追加测试摘要文件
-          # Get-Content -Path target/nextest/ci/test-summary.md | Add-Content -Path issue_body.md
+          Get-Content -Path target/nextest/ci/summary.md | Add-Content -Path issue_body.md
 
       - uses: peter-evans/create-or-update-comment@v4
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         with:
           issue-number: 1
           comment-id: 3192037735
