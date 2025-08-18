@@ -18,3 +18,4 @@ base64 = "0.22.1"
 name = "benchmarks"
 harness = false
 path = "benchmarks"
+# https://nexte.st/docs/integrations/criterion/
